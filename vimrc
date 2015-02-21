@@ -7,9 +7,9 @@ execute pathogen#infect()
 "endif
 syntax on
 filetype plugin indent on
-set omnifunc=syntaxcomplete#Complete
-au FileType python set omnifunc=pythoncomplete#Complete
-set completeopt=longest,menuone
+" set omnifunc=syntaxcomplete#Complete
+" au FileType python set omnifunc=pythoncomplete#Complete
+" set completeopt=longest,menuone
 
 let mapleader=","
 
@@ -51,9 +51,12 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui=0
+let g:ycm_auto_trigger = 0
+let g:ycm_min_num_of_chars_for_completion = 4
 
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPBuffer'
 nnoremap <leader>. :CtrlPTag<cr>
 
 let g:ctrlp_extensions = ['tag']
@@ -75,4 +78,8 @@ set mouse=a
 set ttymouse=sgr
 " }}}
 
-:set tags=./tags;
+set tags=./tags;
+set timeoutlen=1000 ttimeoutlen=100
+
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul

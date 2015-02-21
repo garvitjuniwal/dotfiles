@@ -92,7 +92,9 @@ flags = [
 '-isystem',
 '/home/ubuntu/sdmain/src/cpp/code',
 '-isystem',
-'/home/ubuntu/sdmain/src/cpp/include'
+'/home/ubuntu/sdmain/src/cpp/include',
+'-isystem',
+'/home/ubuntu/sdmain/src/cpp/build/debug'
 ]
 
 

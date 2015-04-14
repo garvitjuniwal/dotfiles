@@ -90,11 +90,11 @@ flags = [
 '-isystem',
 '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include',
 '-isystem',
-'/home/ubuntu/sdmain/src/cpp/code',
+'/home/ubuntu/sdmain0/src/cpp/code',
 '-isystem',
-'/home/ubuntu/sdmain/src/cpp/include',
+'/home/ubuntu/sdmain0/src/cpp/include',
 '-isystem',
-'/home/ubuntu/sdmain/src/cpp/build/debug'
+'/home/ubuntu/sdmain0/src/cpp/build/debug'
 ]
 
 

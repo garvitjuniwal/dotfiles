@@ -11,7 +11,7 @@ set omnifunc=syntaxcomplete#Complete
 au FileType python set omnifunc=pythoncomplete#Complete
 set completeopt=longest,menuone
 
-" let mapleader=","
+let mapleader=","
 
 "Setup term color support
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
@@ -51,13 +51,14 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui=0
+let g:ycm_confirm_extra_conf=1  
+let g:ycm_show_diagnostics_ui=1
 " au FileType cpp let g:ycm_auto_trigger = 0
 " au FileType cpp let g:ycm_min_num_of_chars_for_completion = 4
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPBuffer'
-nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>t :CtrlPTag<cr>
 
 let g:ctrlp_extensions = ['tag']
 

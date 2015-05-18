@@ -81,8 +81,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -94,6 +94,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ack='ack-grep'
+
+alias gg='git grep -n'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -121,7 +123,6 @@ fi
 
 # export CSCOPE_DB=/home/ubuntu/sdmain0/src/cpp/code/cscope.out;
 export SDMAIN0_SRCCPP=/home/ubuntu/sdmain0/src/cpp;
-cd $SDMAIN0_SRCCPP
 
 # export LC_TMUX_SESSION_NAME=ubuntu
 # if [ -n "$LC_TMUX_SESSION_NAME" -a $TERM != "screen" ]; then

@@ -26,8 +26,8 @@ set background=dark
 " set background=dark
 " colorscheme solarized
 
-au FileType cpp setlocal tabstop=2 shiftwidth=2
-au FileType python setlocal tabstop=4 shiftwidth=4
+au FileType cpp setlocal tabstop=2 shiftwidth=2 textwidth=80
+au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=79
 set tabstop=4 shiftwidth=4
 set expandtab
 set textwidth=80
@@ -53,6 +53,7 @@ nnoremap <C-H> <C-W><C-H>
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf=1  
 let g:ycm_show_diagnostics_ui=1
+" let g:ycm_filetype_blacklist={'python': 1}
 " au FileType cpp let g:ycm_auto_trigger = 0
 " au FileType cpp let g:ycm_min_num_of_chars_for_completion = 4
 
@@ -65,6 +66,7 @@ let g:ctrlp_extensions = ['tag']
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*/build/*     " Linux/MacOSX
 
 let g:ctrlp_working_path_mode = 'a'
+let g:ctrlp_custom_ignore = 'log.txt'
 set hlsearch
 set incsearch
 
@@ -103,3 +105,33 @@ endif
 
 " For local replace
 nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+
+" Rainbow parenthesis
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" python mode settings
+let g:pymode_rope=0
+let g:pymode_rope_lookup_project = 0

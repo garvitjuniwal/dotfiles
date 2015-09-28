@@ -63,10 +63,13 @@ nnoremap <leader>t :CtrlPTag<cr>
 
 let g:ctrlp_extensions = ['tag']
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*/build/*     " Linux/MacOSX
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*/cpp/build/*,*/web/build/*,*/py/build/*,*.class     " Linux/MacOSX
 
 let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_custom_ignore = 'log.txt'
+let g:ctrlp_max_files = 20000
+let g:ctrlp_max_depth = 40
+call ctrlp_bdelete#init()
 set hlsearch
 set incsearch
 
@@ -117,7 +120,7 @@ let g:rbpt_colorpairs = [
     \ ['darkmagenta', 'DarkOrchid3'],
     \ ['brown',       'firebrick3'],
     \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
+    \ ['brown',       'firebrick3'],
     \ ['darkmagenta', 'DarkOrchid3'],
     \ ['Darkblue',    'firebrick3'],
     \ ['darkgreen',   'RoyalBlue3'],
@@ -135,3 +138,4 @@ au Syntax * RainbowParenthesesLoadBraces
 " python mode settings
 let g:pymode_rope=0
 let g:pymode_rope_lookup_project = 0
+autocmd FilterWritePre * if &diff | setlocal wrap< | endif

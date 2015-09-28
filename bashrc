@@ -136,3 +136,16 @@ export SDMAIN0_SRCCPP=/home/ubuntu/sdmain0/src/cpp;
 # export TERM=screen-256color
 # prevent C-s and C-q to hang terminal
 stty -ixon
+tunnel() {
+  ssh -A supporttunnel.rubrik.com -t ssh -p $1 -i ubuntu.pem localhost
+}
+
+portforward() {
+  ssh -A -L$2:localhost:$2 supporttunnel.rubrik.com -t ssh -p $1 -L$2:localhost:$3 -i ubuntu.pem localhost
+}
+
+alias st=tunnel
+alias pf=portforward
+
+eval `ssh-agent -s` > /dev/null
+ssh-add -k ~/sdmain0/deployment/ssh_keys/ubuntu.pem 2&>1 > /dev/null

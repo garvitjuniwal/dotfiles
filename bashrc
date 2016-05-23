@@ -136,6 +136,9 @@ export SDMAIN0_SRCCPP=/home/ubuntu/sdmain0/src/cpp;
 # export TERM=screen-256color
 # prevent C-s and C-q to hang terminal
 stty -ixon
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 tunnel() {
   ssh -A supporttunnel.rubrik.com -t ssh -p $1 -i ubuntu.pem localhost
 }
@@ -149,3 +152,25 @@ alias pf=portforward
 
 eval `ssh-agent -s` > /dev/null
 ssh-add -k ~/sdmain0/deployment/ssh_keys/ubuntu.pem 2&>1 > /dev/null
+
+listtunnels() {
+  ssh supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py list
+}
+
+tunnel() {
+  ssh supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py connect $1 $2
+}
+
+portforward() {
+  ssh -L$3:localhost:$3 supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py forward $1 $2 --local_port $3 --node_port $4
+}
+
+alias lt=listtunnels
+alias st=tunnel
+alias pf=portforward
+
+export DELETE_EXISTING_SNAPSHOTS=1
+export PROD_CHECK=0
+export RKTEST_YML=conf/rktest_garvit.yml
+export GOPATH=$HOME/goplay
+export PATH=$PATH:/usr/lib/go-1.6/bin:$GOPATH/bin

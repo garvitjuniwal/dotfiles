@@ -79,7 +79,7 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r ~/.dir_colors/dircolors && eval "$(dircolors -b ~/.dir_colors/dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
@@ -139,6 +139,16 @@ stty -ixon
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+ssh() {
+    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
+        tmux rename-window "$(echo $*)"
+        command ssh "$@"
+        tmux set-window-option automatic-rename "on" 1>/dev/null
+    else
+        command ssh "$@"
+    fi
+}
+
 tunnel() {
   ssh -A supporttunnel.rubrik.com -t ssh -p $1 -i ubuntu.pem localhost
 }
@@ -151,7 +161,6 @@ alias st=tunnel
 alias pf=portforward
 
 eval `ssh-agent -s` > /dev/null
-ssh-add -k ~/sdmain0/deployment/ssh_keys/ubuntu.pem 2&>1 > /dev/null
 
 listtunnels() {
   ssh supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py list
@@ -165,12 +174,41 @@ portforward() {
   ssh -L$3:localhost:$3 supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py forward $1 $2 --local_port $3 --node_port $4
 }
 
+portforward2() {
+  ssh -L$2:localhost:$2 supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py forward --tunnel_port $1 --local_port $2 --node_port $3
+}
+
 alias lt=listtunnels
 alias st=tunnel
-alias pf=portforward
+alias pf=portforward2
 
 export DELETE_EXISTING_SNAPSHOTS=1
 export PROD_CHECK=0
 export RKTEST_YML=conf/rktest_garvit.yml
+export SKIP_TESTBED_CHECKS=1
 export GOPATH=$HOME/goplay
 export PATH=$PATH:/usr/lib/go-1.6/bin:$GOPATH/bin
+export PATH=$PATH:/opt/odb-2.4.0-x86_64-linux-gnu/bin
+
+listbranches() {
+  for i in sdmain0 sdmain1 sdmain2; do  cd ~/$i; echo $i; cat conf/version; git branch -vvvv; cd - > /dev/null; done;
+}
+alias lb=listbranches
+
+function rebase() {
+  CUR_REF="$(git symbolic-ref HEAD)"
+  CUR_BRANCH="${CUR_REF##refs/heads/}"
+  UPSTREAM_BRANCH="$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
+
+  echo "Updating ${UPSTREAM_BRANCH}..."
+  git checkout "${UPSTREAM_BRANCH}" && git pull --ff-only
+  PULL_SUCCEEDED=$?
+  git checkout "${CUR_BRANCH}"
+  if [ "$PULL_SUCCEEDED" -eq 0 ]; then
+    echo "Rebasing ${CUR_BRANCH}..."
+    git pull --rebase
+  else
+    echo "Failed to update ${UPSTREAM_BRANCH}; not rebasing"
+    return 1
+  fi
+}

@@ -6,7 +6,7 @@ set omnifunc=syntaxcomplete#Complete
 au FileType python set omnifunc=pythoncomplete#Complete
 set completeopt=longest,menuone
 
-let mapleader=","
+let mapleader=" "
 
 
 " let g:solarized_termcolors=256
@@ -14,7 +14,6 @@ let mapleader=","
 " set background=dark
 " colorscheme solarized
 
-set ignorecase
 set smartcase
 
 " nmap <S-Enter> O<Esc>
@@ -25,7 +24,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-set hlsearch
 set incsearch
 
 autocmd BufWritePre *.py :%s/\s\+$//e

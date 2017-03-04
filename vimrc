@@ -15,9 +15,9 @@ set completeopt=longest,menuone
 let mapleader=" "
 
 "Setup term color support
-" if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-"     set t_Co=256
-"   endif
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+    set t_Co=256
+endif
 " let g:seoul256_background=236
 " colo seoul256
 " set background=dark
@@ -29,22 +29,24 @@ let mapleader=" "
 
 " Solarized stuff
 let g:solarized_termtrans = 1
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
 set background=dark
 colorscheme solarized
 
 au FileType cpp setlocal tabstop=2 shiftwidth=2 textwidth=80
+au FileType json setlocal tabstop=2 shiftwidth=2 textwidth=10000
+au FileType yaml setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=79
 set tabstop=4 shiftwidth=4
 set expandtab
 set textwidth=80
 set colorcolumn=+1
-set nu
-set clipboard=unnamed
-set foldmethod=syntax
-set foldlevel=99
+
 set ignorecase
 set smartcase
 set pumheight=15
+set nonu
 
 " nmap <S-Enter> O<Esc>
 " nmap <CR> o<Esc>
@@ -58,7 +60,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui=1
+let g:ycm_show_diagnostics_ui=0
 let g:ycm_confirm_extra_conf = 0
 " let g:ycm_filetype_blacklist={'python': 1}
 " au FileType cpp let g:ycm_auto_trigger = 0
@@ -77,8 +79,9 @@ let g:ycm_confirm_extra_conf = 0
 " let g:ctrlp_max_files = 200000
 " let g:ctrlp_max_depth = 40
 " call ctrlp_bdelete#init()
-set hlsearch
+set nohlsearch
 set incsearch
+set nofoldenable
 
 " " Mouse {{{
 " " Send more characters for redraws
@@ -100,8 +103,12 @@ autocmd InsertLeave * set nocul
 autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
 autocmd BufWritePre *.h :%s/\s\+$//e
+autocmd BufWritePre *.scala :%s/\s\+$//e
+autocmd BufWritePre *.json :%s/\s\+$//e
+autocmd BufWritePre *.yaml :%s/\s\+$//e
 
 set noswapfile
+set spell
 
 if has('statusline')
   set laststatus=2
@@ -118,36 +125,34 @@ nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
 
 " Rainbow parenthesis
 let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
+    \ ['darkgreen', 'RoyalBlue3'],
     \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['brown',       'firebrick3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
     \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
     \ ]
-let g:rbpt_max = 16
+let g:rbpt_max = 3
 let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+" thrift
+au BufRead,BufNewFile *.thrift set filetype=thrift
+au! Syntax thrift source ~/.vim/thrift.vim
+
+" yaml
+au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/yaml.vim
+
 " python mode settings
 let g:pymode_rope=0
+let g:pymode_options=0
+let g:pymode_folding=0
 let g:pymode_rope_lookup_project = 0
 let g:pymode_doc = 0
 let g:pymode_run = 0
 let g:pymode_lint_checkers = ['pep8']
+let g:pymode_breakpoint = 0
+let g:pymode_lint_cwindow = 0
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
 set rtp+=~/.fzf
@@ -159,6 +164,7 @@ set rtp+=~/.fzf
 
   " [[B]Commits] Customize the options used by 'git log':
   let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d%s %C(black)%C(bold)%cr"'
+  "let g:fzf_launcher = 'gnome-terminal -geometry 120x30 -e sh -c %s'
 
 
   nnoremap <silent> <leader>a :Files<CR>
@@ -210,8 +216,11 @@ set rtp+=~/.fzf
   command! -bang -nargs=* Gg call fzf#run({
     \ 'source': 'git grep -n -I --untracked -i "<args>"',
     \ 'sink': function('GitGrepHandler'),
-    \ 'options': '+m',
+    \ 'options': '+m -m',
     \ 'tmux_height': '40%'
   \ })
 
 " }}}
+call camelcasemotion#CreateMotionMappings('<leader>')
+
+let g:vim_json_syntax_conceal = 0

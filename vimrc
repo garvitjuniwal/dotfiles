@@ -38,6 +38,7 @@ au FileType cpp setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType json setlocal tabstop=2 shiftwidth=2 textwidth=10000
 au FileType yaml setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=79
+au FileType go setlocal tabstop=2 shiftwidth=2 textwidth=100
 set tabstop=4 shiftwidth=4
 set expandtab
 set textwidth=80
@@ -59,9 +60,13 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui=0
-let g:ycm_confirm_extra_conf = 0
+imap <C-D> <C-O>x
+
+" let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+" let g:ycm_show_diagnostics_ui=0
+" let g:ycm_confirm_extra_conf = 0
+" let g:ycm_min_num_of_chars_for_completion = 100
+" let g:loaded_youcompleteme = 1
 " let g:ycm_filetype_blacklist={'python': 1}
 " au FileType cpp let g:ycm_auto_trigger = 0
 " au FileType cpp let g:ycm_min_num_of_chars_for_completion = 4
@@ -224,3 +229,24 @@ set rtp+=~/.fzf
 call camelcasemotion#CreateMotionMappings('<leader>')
 
 let g:vim_json_syntax_conceal = 0
+
+" Disable tabline
+set showtabline=0
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+
+" Cycle thru tabs
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+
+let g:go_doc_keywordprg_enabled=0
+autocmd FileType go nmap <C-b>  <Plug>(go-def)

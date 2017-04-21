@@ -122,7 +122,7 @@ if ! shopt -oq posix; then
 fi
 
 # export CSCOPE_DB=/home/ubuntu/sdmain0/src/cpp/code/cscope.out;
-export SDMAIN0_SRCCPP=/home/ubuntu/sdmain0/src/cpp;
+export SDMAIN0_SRCCPP=/home/ubuntu/0sdmain0/src/cpp;
 
 # export LC_TMUX_SESSION_NAME=ubuntu
 # if [ -n "$LC_TMUX_SESSION_NAME" -a $TERM != "screen" ]; then
@@ -149,17 +149,6 @@ ssh() {
     fi
 }
 
-tunnel() {
-  ssh -A supporttunnel.rubrik.com -t ssh -p $1 -i ubuntu.pem localhost
-}
-
-portforward() {
-  ssh -A -L$2:localhost:$2 supporttunnel.rubrik.com -t ssh -p $1 -L$2:localhost:$3 -i ubuntu.pem localhost
-}
-
-alias st=tunnel
-alias pf=portforward
-
 eval `ssh-agent -s` > /dev/null
 
 listtunnels() {
@@ -168,6 +157,10 @@ listtunnels() {
 
 tunnel() {
   ssh supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py connect $1 $2
+}
+
+tunnel_port() {
+  ssh supporttunnel.corp.rubrik.com -t /opt/rubrik/src/scripts/infra/tunnel/tunnel.py connect --tunnel_port $1
 }
 
 portforward() {
@@ -179,7 +172,7 @@ portforward2() {
 }
 
 alias lt=listtunnels
-alias st=tunnel
+alias st=tunnel_port
 alias pf=portforward2
 
 export DELETE_EXISTING_SNAPSHOTS=1
@@ -187,11 +180,11 @@ export PROD_CHECK=0
 export RKTEST_YML=conf/rktest_garvit.yml
 export SKIP_TESTBED_CHECKS=1
 export GOPATH=$HOME/goplay
-export PATH=$PATH:/usr/lib/go-1.6/bin:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 export PATH=$PATH:/opt/odb-2.4.0-x86_64-linux-gnu/bin
 
 listbranches() {
-  for i in sdmain0 sdmain1 sdmain2; do  cd ~/$i; echo $i; cat conf/version; git branch -vvvv; cd - > /dev/null; done;
+  for i in 0sdmain0 1sdmain1 2sdmain2; do  cd ~/$i; echo $i; cat conf/version; git branch -vvvv; cd - > /dev/null; done;
 }
 alias lb=listbranches
 
@@ -212,3 +205,5 @@ function rebase() {
     return 1
   fi
 }
+
+alias vimgo='vim -u ~/.vimrc.go'

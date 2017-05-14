@@ -149,15 +149,18 @@ au! Syntax thrift source ~/.vim/thrift.vim
 au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/yaml.vim
 
 " python mode settings
-let g:pymode_rope=0
-let g:pymode_options=0
-let g:pymode_folding=0
-let g:pymode_rope_lookup_project = 0
-let g:pymode_doc = 0
-let g:pymode_run = 0
-let g:pymode_lint_checkers = ['pep8']
-let g:pymode_breakpoint = 0
-let g:pymode_lint_cwindow = 0
+" let g:pymode_rope=0
+" let g:pymode_options=0
+" let g:pymode_folding=0
+" let g:pymode_rope_lookup_project = 0
+" let g:pymode_doc = 0
+" let g:pymode_run = 0
+" let g:pymode_lint_checkers = ['pep8']
+" let g:pymode_breakpoint = 0
+" let g:pymode_lint_cwindow = 0
+
+
+" Wrap lines in vimdiff by default
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
 set rtp+=~/.fzf
@@ -183,6 +186,8 @@ set rtp+=~/.fzf
   nnoremap <silent> <leader>/ :execute 'Gg ' . input('Gg/')<CR>
   nnoremap <silent> K :call SearchWordWithGg()<CR>
   vnoremap <silent> K :call SearchVisualSelectionWithGg()<CR>
+  nnoremap <silent> T :call SearchWordWithAg()<CR>
+  vnoremap <silent> T :call SearchVisualSelectionWithGg()<CR>
   nnoremap <silent> <leader>gl :Commits<CR>
   nnoremap <silent> <leader>ga :BCommits<CR>
   nnoremap <silent> <leader>ft :Filetypes<CR>
@@ -192,6 +197,10 @@ set rtp+=~/.fzf
 
   function! SearchWordWithGg()
     execute 'Gg' expand('<cword>')
+  endfunction
+
+  function! SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
   endfunction
 
   function! SearchVisualSelectionWithGg() range
@@ -204,6 +213,18 @@ set rtp+=~/.fzf
     call setreg('"', old_reg, old_regtype)
     let &clipboard = old_clipboard
     execute 'Gg' selection
+  endfunction
+
+  function! SearchVisualSelectionWithAg() range
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    let old_clipboard = &clipboard
+    set clipboard&
+    normal! ""gvy
+    let selection = getreg('"')
+    call setreg('"', old_reg, old_regtype)
+    let &clipboard = old_clipboard
+    execute 'Ag' selection
   endfunction
 
   function! s:escape(path)
@@ -248,5 +269,16 @@ noremap <leader>9 9gt
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 
+" Vim go helpers
+nnoremap <leader>q :cclose<CR>
+nnoremap <leader>l :lclose<CR>
+
 let g:go_doc_keywordprg_enabled=0
 autocmd FileType go nmap <C-b>  <Plug>(go-def)
+
+
+let g:syntastic_mode_map = {"mode": "passive"}
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_use_quickfix_lists = 1
+let g:syntastic_cpp_compiler = 'g++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -DHAVE_NETINET_IN_H -D_FILE_OFFSET_BITS=64 -DGTEST_USE_OWN_TR1_TUPLE=0 -DBOOST_SPIRIT_THREADSAFE -Wno-unused-local-typedefs -Wno-pointer-arith -Wall -Werror -Wsign-compare -Wtype-limits -c -fmessage-length=0'

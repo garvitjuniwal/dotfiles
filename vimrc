@@ -38,7 +38,8 @@ au FileType cpp setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType json setlocal tabstop=2 shiftwidth=2 textwidth=10000
 au FileType yaml setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=79
-au FileType go setlocal tabstop=2 shiftwidth=2 textwidth=100
+au FileType go setlocal tabstop=2 shiftwidth=2 textwidth=80
+au FileType gitcommit setlocal textwidth=72
 set tabstop=4 shiftwidth=4
 set expandtab
 set textwidth=80
@@ -87,6 +88,7 @@ imap <C-D> <C-O>x
 set nohlsearch
 set incsearch
 set nofoldenable
+set wrapscan
 
 " " Mouse {{{
 " " Send more characters for redraws
@@ -111,6 +113,7 @@ autocmd BufWritePre *.h :%s/\s\+$//e
 autocmd BufWritePre *.scala :%s/\s\+$//e
 autocmd BufWritePre *.json :%s/\s\+$//e
 autocmd BufWritePre *.yaml :%s/\s\+$//e
+autocmd BufWritePre *.yml :%s/\s\+$//e
 
 set noswapfile
 set spell
@@ -274,6 +277,9 @@ nnoremap <leader>q :cclose<CR>
 nnoremap <leader>l :lclose<CR>
 
 let g:go_doc_keywordprg_enabled=0
+let g:go_autodetect_gopath=0
+let g:go_fmt_command = 'goimports'
+let g:go_fmt_options = '-local rubrik'
 autocmd FileType go nmap <C-b>  <Plug>(go-def)
 
 

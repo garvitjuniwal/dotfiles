@@ -280,11 +280,13 @@ let g:go_doc_keywordprg_enabled=0
 let g:go_autodetect_gopath=0
 let g:go_fmt_command = 'goimports'
 let g:go_fmt_options = '-local rubrik'
+let g:go_highlight_string_spellcheck=0
 autocmd FileType go nmap <C-b>  <Plug>(go-def)
 
 
 let g:syntastic_mode_map = {"mode": "passive"}
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_use_quickfix_lists = 1
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -DHAVE_NETINET_IN_H -D_FILE_OFFSET_BITS=64 -DGTEST_USE_OWN_TR1_TUPLE=0 -DBOOST_SPIRIT_THREADSAFE -Wno-unused-local-typedefs -Wno-pointer-arith -Wall -Werror -Wsign-compare -Wtype-limits -c -fmessage-length=0'

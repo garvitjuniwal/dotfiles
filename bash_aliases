@@ -9,3 +9,5 @@ go1() {
 go2() {
   GOPATH=~/2sdmain2/src/go $@
 }
+
+alias cdroach='cd /home/garvit/goplay/src/github.com/cockroachdb/'

@@ -1,5 +1,19 @@
 set ruler
 
+" Specify a directory for plugins
+" " - For Neovim: stdpath('data') . '/plugged'
+" " - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" 
+" Plug 'ryanolsonx/vim-lsp-python'
+
+Plug 'fisadev/vim-isort'
+Plug 'nvie/vim-flake8'
+
+call plug#end()
+
 
 execute pathogen#infect()
 "if !has('gui_running')
@@ -37,7 +51,7 @@ colorscheme solarized
 au FileType cpp setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType json setlocal tabstop=2 shiftwidth=2 textwidth=10000
 au FileType yaml setlocal tabstop=2 shiftwidth=2 textwidth=80
-au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=79
+au FileType python setlocal tabstop=4 shiftwidth=4 textwidth=88
 au FileType go setlocal tabstop=2 shiftwidth=2 textwidth=80
 au FileType gitcommit setlocal textwidth=72
 set tabstop=4 shiftwidth=4
@@ -107,16 +121,18 @@ set timeoutlen=1000 ttimeoutlen=100
 
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
-autocmd BufWritePre *.py :%s/\s\+$//e
+" autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.cpp :%s/\s\+$//e
 autocmd BufWritePre *.h :%s/\s\+$//e
 autocmd BufWritePre *.scala :%s/\s\+$//e
 autocmd BufWritePre *.json :%s/\s\+$//e
 autocmd BufWritePre *.yaml :%s/\s\+$//e
 autocmd BufWritePre *.yml :%s/\s\+$//e
+autocmd BufWritePre *.py execute ':Isort'
+autocmd BufWritePre *.py execute ':Black'
+autocmd BufWritePost *.py call flake8#Flake8()
 
 set noswapfile
-set spell
 
 if has('statusline')
   set laststatus=2
@@ -162,6 +178,7 @@ au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/yaml.vim
 " let g:pymode_breakpoint = 0
 " let g:pymode_lint_cwindow = 0
 
+let g:jedi#documentation_command=''
 
 " Wrap lines in vimdiff by default
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
@@ -290,3 +307,5 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_use_quickfix_lists = 1
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -DHAVE_NETINET_IN_H -D_FILE_OFFSET_BITS=64 -DGTEST_USE_OWN_TR1_TUPLE=0 -DBOOST_SPIRIT_THREADSAFE -Wno-unused-local-typedefs -Wno-pointer-arith -Wall -Werror -Wsign-compare -Wtype-limits -c -fmessage-length=0'
+let g:syntastic_python_checkers = ['flake8', 'mypy']
+

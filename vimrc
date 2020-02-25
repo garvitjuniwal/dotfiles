@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'fisadev/vim-isort'
 Plug 'nvie/vim-flake8'
+Plug 'Vimjas/vim-python-pep8-indent'
 
 call plug#end()
 
@@ -128,9 +129,9 @@ autocmd BufWritePre *.scala :%s/\s\+$//e
 autocmd BufWritePre *.json :%s/\s\+$//e
 autocmd BufWritePre *.yaml :%s/\s\+$//e
 autocmd BufWritePre *.yml :%s/\s\+$//e
-autocmd BufWritePre *.py execute ':Isort'
+"autocmd BufWritePre *.py execute ':Isort'
 autocmd BufWritePre *.py execute ':Black'
-autocmd BufWritePost *.py call flake8#Flake8()
+"autocmd BufWritePost *.py call flake8#Flake8()
 
 set noswapfile
 
@@ -179,6 +180,11 @@ au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/yaml.vim
 " let g:pymode_lint_cwindow = 0
 
 let g:jedi#documentation_command=''
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#auto_initialization = 0
+
+
 
 " Wrap lines in vimdiff by default
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
